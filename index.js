@@ -243,7 +243,7 @@ app.post("/addarea", (req, res) => {
 });
 
 app.put("/updateemployee/:id", (req, res) => {
-  console.log("we are in edit employee catatagory");
+  console.log("we are in edit employee catatagory", req.body);
 
   const id = req.params.id;
   const { name, user_level } = req.body;
