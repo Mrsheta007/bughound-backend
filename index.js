@@ -192,7 +192,7 @@ app.get("/getemployees", (req, res) => {
 
 app.get("/getemployee/:employee_id", (req, res) => {
   const employee_id = req.params.employee_id;
-  console.log("this is the code backend -------------------------:", programId);
+  console.log("this is the code backend -------------------------:");
   const query = `SELECT * FROM employees WHERE id=${employee_id}`;
 
   db.query(query, function (error, results, fields) {
