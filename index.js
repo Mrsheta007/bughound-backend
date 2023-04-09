@@ -176,7 +176,8 @@ app.get("/getemployees", (req, res) => {
   // Check if add_program table exists
   console.log("this is the test of get employees:");
   db.query(
-    "CREATE TABLE IF NOT EXISTS employees (name VARCHAR(255),username VARCHAR(255),password VARCHAR(255), user_level VARCHAR(255))",
+    "CREATE TABLE IF NOT EXISTS employees (id INT NOT NULL AUTO_INCREMENT, name VARCHAR(255) NOT NULL, username VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, user_level VARCHAR(255) NOT NULL, PRIMARY KEY (id))",
+
     (err) => {
       if (err) throw err;
 
@@ -191,7 +192,7 @@ app.get("/getemployees", (req, res) => {
 
 app.get("/getemployee/:employee_id", (req, res) => {
   const employee_id = req.params.employee_id;
-  // console.log("this is the code backend -------------------------:", programId);
+  console.log("this is the code backend -------------------------:", programId);
   const query = `SELECT * FROM employees WHERE id=${employee_id}`;
 
   db.query(query, function (error, results, fields) {
