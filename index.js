@@ -192,14 +192,16 @@ app.get("/getemployees", (req, res) => {
 
 app.get("/getemployee/:employee_id", (req, res) => {
   const employee_id = req.params.employee_id;
-  console.log("this is the code backend -------------------------:");
+  console.log(
+    "this is the code backend of getemployee-------------------------:"
+  );
   const query = `SELECT * FROM employees WHERE id=${employee_id}`;
 
   db.query(query, function (error, results, fields) {
     if (error) throw error;
 
     console.log(
-      "this is the restult of the qury$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$",
+      "this is the restult of the get employee from backend",
       results
     );
     res.send(results);
