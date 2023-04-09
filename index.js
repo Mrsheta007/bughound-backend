@@ -471,17 +471,6 @@ app.get("/searchresult", (req, res) => {
   );
 });
 
-// db.query(`CREATE TABLE files (
-//   id INT PRIMARY KEY AUTO_INCREMENT,
-//   name VARCHAR(255) NOT NULL,
-//   mimetype VARCHAR(255) NOT NULL,
-//   size INT NOT NULL,
-//   path VARCHAR(255) NOT NULL,
-//   bug_id INT NOT NULL,
-//   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-//   FOREIGN KEY (bug_id) REFERENCES bug(id)
-// );`);
-
 app.post("/api/upload", upload.single("file"), (req, res) => {
   console.log("this is bug id:------------------:", req.body.bug_id);
   const file = req.file;
@@ -493,41 +482,57 @@ app.post("/api/upload", upload.single("file"), (req, res) => {
     return;
   }
 
-  const selectSql = "SELECT path FROM files WHERE bug_id = ?";
-  db.query(selectSql, [bugId], (error, results, fields) => {
-    if (error) throw error;
-    if (results.length > 0) {
-      // If there is an existing file for this bug ID, delete it
-      const oldFilePath = results[0].path;
-      fs.unlink(oldFilePath, (err) => {
-        if (err) throw err;
+  const checkTableSql = "SELECT 1 FROM files LIMIT 1";
+  db.query(checkTableSql, (error, results, fields) => {
+    if (error) {
+      const createTableSql =
+        "CREATE TABLE files (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255), mimetype VARCHAR(255), size INT, path VARCHAR(255), bug_id INT, FOREIGN KEY (bug_id) REFERENCES bugs(id))";
+      db.query(createTableSql, (error, results, fields) => {
+        if (error) throw error;
+        insertFile();
+      });
+    } else {
+      insertFile();
+    }
+  });
 
-        // Then insert the new file
-        const updateSql =
-          "UPDATE files SET name = ?, mimetype = ?, size = ?, path = ? WHERE bug_id = ?";
+  function insertFile() {
+    const selectSql = "SELECT path FROM files WHERE bug_id = ?";
+    db.query(selectSql, [bugId], (error, results, fields) => {
+      if (error) throw error;
+      if (results.length > 0) {
+        // If there is an existing file for this bug ID, delete it
+        const oldFilePath = results[0].path;
+        fs.unlink(oldFilePath, (err) => {
+          if (err) throw err;
+
+          // Then insert the new file
+          const updateSql =
+            "UPDATE files SET name = ?, mimetype = ?, size = ?, path = ? WHERE bug_id = ?";
+          db.query(
+            updateSql,
+            [file.originalname, file.mimetype, file.size, file.path, bugId],
+            (error, results, fields) => {
+              if (error) throw error;
+              res.json({ success: true });
+            }
+          );
+        });
+      } else {
+        // If there is no existing file, insert the new one
+        const insertSql =
+          "INSERT INTO files (name, mimetype, size, path, bug_id) VALUES (?, ?, ?, ?, ?)";
         db.query(
-          updateSql,
+          insertSql,
           [file.originalname, file.mimetype, file.size, file.path, bugId],
           (error, results, fields) => {
             if (error) throw error;
             res.json({ success: true });
           }
         );
-      });
-    } else {
-      // If there is no existing file, insert the new one
-      const insertSql =
-        "INSERT INTO files (name, mimetype, size, path, bug_id) VALUES (?, ?, ?, ?, ?)";
-      db.query(
-        insertSql,
-        [file.originalname, file.mimetype, file.size, file.path, bugId],
-        (error, results, fields) => {
-          if (error) throw error;
-          res.json({ success: true });
-        }
-      );
-    }
-  });
+      }
+    });
+  }
 });
 
 app.get("/api/getfiles/:bugid", (req, res) => {
