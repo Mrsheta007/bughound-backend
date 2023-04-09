@@ -73,7 +73,7 @@ app.get("/export/:tableName", (req, res) => {
 // Define the endpoint for adding an employee
 app.post("/addemployee", (req, res) => {
   const { name, username, password, userLevel } = req.body;
-
+  console.log("we are adding this emplyoee (backend):", req.body);
   // Create the table for the new employee if it does not exist
   db.query(
     "CREATE TABLE IF NOT EXISTS employees (id INT NOT NULL AUTO_INCREMENT, name VARCHAR(255) NOT NULL, username VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, user_level VARCHAR(255) NOT NULL, PRIMARY KEY (id))",
@@ -243,6 +243,7 @@ app.post("/addarea", (req, res) => {
 });
 
 app.put("/updateemployee/:id", (req, res) => {
+  console.log("we are in edit employee catatagory");
   db.query(
     `
   CREATE TABLE IF NOT EXISTS areas (
