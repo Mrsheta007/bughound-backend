@@ -96,7 +96,7 @@ app.post("/addemployee", (req, res) => {
         console.log(err);
         res.status(500).send("Error creating employee");
       } else {
-        //console.log("New employee created with ID:", result.insertId);
+        console.log("New employee created with ID:", result.insertId);
         res.send("New employee created");
       }
     }
