@@ -487,6 +487,7 @@ app.post("/api/upload", upload.single("file"), (req, res) => {
   const checkTableSql = "SELECT 1 FROM files LIMIT 1";
   db.query(checkTableSql, (error, results, fields) => {
     if (error) {
+      console.log("there is no table. we are creating one called files");
       const createTableSql =
         "CREATE TABLE files (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255), mimetype VARCHAR(255), size INT, path VARCHAR(255), bug_id INT, FOREIGN KEY (bug_id) REFERENCES bugs(id))";
       db.query(createTableSql, (error, results, fields) => {
@@ -499,6 +500,7 @@ app.post("/api/upload", upload.single("file"), (req, res) => {
   });
 
   function insertFile() {
+    console.log("this is inserting file");
     const selectSql = "SELECT path FROM files WHERE bug_id = ?";
     db.query(selectSql, [bugId], (error, results, fields) => {
       if (error) throw error;
