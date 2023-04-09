@@ -243,10 +243,10 @@ app.post("/addarea", (req, res) => {
   );
 });
 
-app.put("/updateemployee/:id", (req, res) => {
+app.put("/updateemployee/:employee_id", (req, res) => {
   console.log("we are in edit employee catatagory", req.body);
 
-  const id = req.params.id;
+  const id = req.params.employee_id;
   const { name, user_level } = req.body;
 
   db.query(
