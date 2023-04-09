@@ -244,23 +244,7 @@ app.post("/addarea", (req, res) => {
 
 app.put("/updateemployee/:id", (req, res) => {
   console.log("we are in edit employee catatagory");
-  db.query(
-    `
-  CREATE TABLE IF NOT EXISTS areas (
-    area_id INT NOT NULL AUTO_INCREMENT,
-    program_id INT NOT NULL,
-    area_name VARCHAR(255),
-    PRIMARY KEY (area_id),
-    FOREIGN KEY (program_id) REFERENCES addprogram(id)
-  )`,
-    (error) => {
-      if (error) {
-        console.log("Error creating areas table:", error);
-      } else {
-        console.log("Areas table created successfully");
-      }
-    }
-  );
+
   const id = req.params.id;
   const { name, user_level } = req.body;
 
