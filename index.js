@@ -174,6 +174,7 @@ app.get("/getoneprogram/:id", (req, res) => {
 
 app.get("/getemployees", (req, res) => {
   // Check if add_program table exists
+  console.log("this is the test of get employees:");
   db.query(
     "CREATE TABLE IF NOT EXISTS employees (name VARCHAR(255),username VARCHAR(255),password VARCHAR(255), user_level VARCHAR(255))",
     (err) => {
@@ -569,7 +570,7 @@ app.get("/api/filesdownload/:id", (req, res) => {
 
 app.post("/login", (req, res) => {
   console.log(
-    "this is here at the login page of the backend----------------->>>>>>>>>>>>>>>>>>>>"
+    "this is here at the login page of----------------->>>>>>>>>>>>>>>>>>>>"
   );
   const username = req.body.username;
   const password = req.body.password;
