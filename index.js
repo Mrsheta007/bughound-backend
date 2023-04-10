@@ -153,6 +153,16 @@ app.get("/getprograms", (req, res) => {
   );
 });
 
+app.get("/getareas", (req, res) => {
+  // Check if add_program table exists
+  // Retrieve program data from add_program table
+  db.query("SELECT * FROM areas", (err, results) => {
+    if (err) throw err;
+    // console.log("this is the backend of the getprogram:---:", results);
+    res.status(200).json(results);
+  });
+});
+
 app.get("/getoneprogram/:id", (req, res) => {
   // Check if add_program table exists
   const { id } = req.params;
@@ -377,6 +387,59 @@ app.get("/getbug/:bugid", function (req, res) {
     if (error) throw error;
     ///onsole.log(":::::::::::::::::::::", results);
     res.send(results);
+  });
+});
+
+app.get("/searchbugs", function (req, res) {
+  // console.log("this is the code backend -------------------------:", programId);
+  const query = `SELECT * FROM bug`;
+
+  db.query(query, function (error, results, fields) {
+    if (error) throw error;
+    ///onsole.log(":::::::::::::::::::::", results);
+    res.send(results);
+  });
+});
+
+app.post("/searchbugfrommenu", function (req, res) {
+  console.log("this is the code req.body -------------------------:", req.body);
+  const {
+    area,
+    assigned_to,
+    priority,
+    program,
+    report_type,
+    reported_by,
+    resolution,
+    severity,
+    status,
+  } = req.body;
+
+  console.log("this is severity:", severity);
+
+  // Build SQL query based on provided request parameters
+  // Build SQL query based on provided request parameters
+  let sql = "SELECT * FROM bug WHERE 1=1";
+  if (area) sql += ` AND area='${area}'`;
+  if (assigned_to) sql += ` AND assigned_to='${assigned_to}'`;
+  if (priority) sql += ` AND priority='${priority}'`;
+  if (program) sql += ` AND program_id='${program}'`;
+  if (report_type) sql += ` AND report_type='${report_type}'`;
+  if (reported_by) sql += ` AND reported_by='${reported_by}'`;
+  if (resolution) sql += ` AND resolution='${resolution}'`;
+  if (severity) sql += ` AND LOWER(severity)='${severity.toLowerCase()}'`; // Use LOWER() function and toLowerCase()
+  if (status) sql += ` AND status='${status}'`;
+
+  console.log(sql);
+
+  // Execute SQL query
+  db.query(sql, (err, result) => {
+    if (err) {
+      console.error("Error retrieving bugs from database: ", err);
+      res.status(500).send("Error retrieving bugs from database");
+      return;
+    }
+    res.send(result);
   });
 });
 
