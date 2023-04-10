@@ -182,6 +182,24 @@ app.get("/getoneprogram/:id", (req, res) => {
   );
 });
 
+app.get("/getsingleprogram/:program_id", (req, res) => {
+  // Check if add_program table exists
+  const id = req.params.program_id;
+
+  // Retrieve program data from add_program table
+  db.query(
+    `SELECT * 
+  FROM addprogram 
+  
+  WHERE id = ${id};`,
+    (err, results) => {
+      if (err) throw err;
+      console.log("this is the backend of the getsingleprogram:---:", results);
+      res.status(200).json(results);
+    }
+  );
+});
+
 app.get("/getemployees", (req, res) => {
   // Check if add_program table exists
   console.log("this is the test of get employees:");
