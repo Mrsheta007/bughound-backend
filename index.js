@@ -277,6 +277,30 @@ app.put("/updateemployee/:employee_id", (req, res) => {
     }
   );
 });
+
+app.put("/updateprogram/:id", (req, res) => {
+  console.log("we are in edit program catatagory", req.body);
+
+  const id = req.params.id;
+  const { name, version, rel } = req.body;
+
+  db.query(
+    "UPDATE addprogram SET name = ?, version = ?, rel = ? WHERE id = ?",
+    [name, version, rel],
+    id,
+    (error, results) => {
+      if (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+      } else {
+        console.log(`program with ID ${id} updated successfully`);
+        res
+          .status(200)
+          .json({ message: `program with ID ${id} updated successfully` });
+      }
+    }
+  );
+});
 // Update an existing area
 app.put("/updatearea/:id", (req, res) => {
   const { id } = req.params;
