@@ -304,9 +304,9 @@ app.put("/updateprogram/:id", (req, res) => {
 
   db.query(
     "UPDATE addprogram SET name = ?, version = ?, rel = ? WHERE id = ?",
-    [name, version, rel],
-    id,
-    (error, results) => {
+    [name, version, rel, id], // add id as the fourth parameter to the array
+    (error, result) => {
+      // add callback function as the third argument
       if (error) {
         console.error(error);
         res.status(500).json({ message: "Internal server error" });
