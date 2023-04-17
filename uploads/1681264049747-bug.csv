@@ -1,0 +1,10 @@
+1,2,hardware error,minor,fdsf,fdfdfdffdfd,1,1681282800000,23,6,fdfd,open,1,Fixed,1.1.2,yes,7,1682665200000,6,1680866111712
+2,1,hardware error,fatal,dynnt,fdfd,1,1681196400000,12,1,fdfd,close,1,Fixed,1.1.2,yes,6,1682406000000,6,1680866111712
+3,1,hardware error,severe,dynnt,fdfd,1,1681196400000,12,1,fdfd,close,1,Fixed,1.1.2,yes,6,1682406000000,6,1680866111712
+4,1,coding error,fatal,tested by milan,tested by milan,6,1680937200000,15,6,fdfdtested by mailn,open,3,working,1.1.2,no,1,1682492400000,7,1680866111712
+5,1,hardware error,severe,dynnt,fdfd,1,1681196400000,12,1,fdfd,close,1,Fixed,1.1.2,yes,6,1682406000000,6,1680866111712
+6,1,hardware error,severe,dynnt,fdfd,1,1681196400000,12,1,fdfd,close,1,Fixed,1.1.2,yes,6,1682406000000,6,1680866111712
+7,1,coding error,severe,dynnt,fdfd,1,1681196400000,12,1,fdfd,close,1,Fixed,1.1.2,yes,6,1682406000000,6,1680866111712
+8,1,coding error,minor,dynnt,fdfd,1,1681196400000,12,1,fdfd,close,1,Fixed,1.1.2,yes,6,1682406000000,6,1680866111712
+9,1,coding error,fatal,dfddmilan ,test,7,1679986800000,12,6,dfdf,close,2,Fixed,1.1.2,yes,6,1682492400000,1,1680866111712
+10,2,coding error,fatal,complete,fdf,1,1681110000000,22,6,complete,open,1,Fixed,1.1.2,no,6,1681801200000,1,1680866111712

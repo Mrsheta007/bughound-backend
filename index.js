@@ -47,26 +47,47 @@ app.get("/export/:tableName", (req, res) => {
       console.error(err);
       return res.status(500).send("Server error");
     }
+
     const fields = Object.keys(results[0]);
     fields.push("timestamp");
-    const opts = { fields };
     const now = new Date();
     results.forEach((result) => {
       result.timestamp = now;
     });
-    csv.stringify(results, opts, (err, output) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).send("Server error");
-      }
-      const fileName = `${tableName}_${now.getTime()}.csv`;
+
+    const outputType = req.query.type || "csv"; // Default to CSV if no type is specified
+    if (outputType === "csv") {
+      const opts = { fields };
+      csv.stringify(results, opts, (err, output) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).send("Server error");
+        }
+
+        const fileName = `${tableName}_${now.getTime()}.csv`;
+        res.setHeader(
+          "Content-Disposition",
+          `attachment; filename="${fileName}"`
+        );
+        res.setHeader("Content-Type", "text/csv");
+        res.status(200).send(output);
+      });
+    } else if (outputType === "ascii") {
+      let output = "";
+      results.forEach((result) => {
+        output += `${JSON.stringify(result)}\n`;
+      });
+
+      const fileName = `${tableName}_${now.getTime()}.txt`;
       res.setHeader(
         "Content-Disposition",
         `attachment; filename="${fileName}"`
       );
-      res.setHeader("Content-Type", "text/csv");
+      res.setHeader("Content-Type", "text/plain");
       res.status(200).send(output);
-    });
+    } else {
+      return res.status(400).send("Invalid output type");
+    }
   });
 });
 
