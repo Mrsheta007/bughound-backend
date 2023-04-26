@@ -96,8 +96,9 @@ app.post("/addemployee", (req, res) => {
   const { name, username, password, userLevel } = req.body;
   console.log("we are adding this emplyoee (backend):", req.body);
   // Create the table for the new employee if it does not exist
+
   db.query(
-    "CREATE TABLE IF NOT EXISTS employees (id INT NOT NULL AUTO_INCREMENT, name VARCHAR(255) NOT NULL, username VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, user_level VARCHAR(255) NOT NULL, PRIMARY KEY (id))",
+    "CREATE TABLE IF NOT EXISTS employees (id INT NOT NULL AUTO_INCREMENT, name VARCHAR(255) NOT NULL, username VARCHAR(255) NOT NULL UNIQUE, password VARCHAR(255) NOT NULL, user_level VARCHAR(255) NOT NULL, PRIMARY KEY (id))",
     (err, result) => {
       if (err) {
         console.log(err);
