@@ -111,15 +111,34 @@ app.post("/addemployee", (req, res) => {
 
   // Insert the new employee into the table
   db.query(
-    "INSERT INTO employees (name, username, password, user_level) VALUES (?, ?, ?, ?)",
-    [name, username, password, userLevel],
-    (err, result) => {
+    "SELECT * FROM employees WHERE username = ?",
+    [username],
+    (err, rows) => {
       if (err) {
         console.log(err);
-        res.status(500).send("Error creating employee");
+        res.status(500).send("Error checking for existing employee");
       } else {
-        console.log("New employee created with ID:", result.insertId);
-        res.send("New employee created");
+        if (rows.length > 0) {
+          // If a row with the same username exists, send an error response
+          res
+            .status(400)
+            .send("An employee with the same username already exists");
+        } else {
+          // If no row with the same username exists, insert the new employee
+          db.query(
+            "INSERT INTO employees (name, username, password, user_level) VALUES (?, ?, ?, ?)",
+            [name, username, password, userLevel],
+            (err, result) => {
+              if (err) {
+                console.log(err);
+                res.status(500).send("Error creating employee");
+              } else {
+                console.log("New employee created with ID:", result.insertId);
+                res.send("New employee created");
+              }
+            }
+          );
+        }
       }
     }
   );
